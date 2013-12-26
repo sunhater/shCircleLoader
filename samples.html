@@ -10,7 +10,7 @@ div[id] {width:100px; height:100px; margin:10px auto;}
 span {font-family:monospace;font-size: 14px}
 pre {text-align:left;margin:0 auto;border:1px solid #888;padding:3px;width:400px;background:#eee}
 .myns > div {
-    box-shadow: 0 0 10px #000, inset 0 0 10px #000;
+    box-shadow: 0 0 6px #000, inset 0 0 6px #000;
 }
 </style>
 </head>
@@ -37,7 +37,7 @@ pre {text-align:left;margin:0 auto;border:1px solid #888;padding:3px;width:400px
 <div id="shclDots"></div>
 <hr />
 
-<h2>Custom animation</h2> <span>.shCircleLoader({keyframes: "0%{{prefix}transform:scale(1)}80%{{prefix}transform:scale(.3);background:red}100%{{prefix}transform:scale(1)}"})</span>
+<h2>Custom dot animation</h2> <span>.shCircleLoader({keyframes: "0%{background:black} 40%{background:transparent} 60%{background:transparent} 100%{background:black}"})</span>
 <div id="shclKeyframes"></div>
 <hr />
 
@@ -45,7 +45,7 @@ pre {text-align:left;margin:0 auto;border:1px solid #888;padding:3px;width:400px
 <h3>CSS:</h3>
 <pre>
 .myns > div {
-    box-shadow: 0 0 10px #000, inset 0 0 10px #000;
+    box-shadow: 0 0 6px #000, inset 0 0 6px #000;
 }
 </pre>
 <div id="shclNs"></div>
@@ -57,7 +57,7 @@ $('#shclCcw').shCircleLoader({clockwise:false});
 $('#shclColor').shCircleLoader({color:"#f00"});
 $('#shclDuration').shCircleLoader({duration: 2});
 $('#shclDots').shCircleLoader({dots:24,dotsRadius:10});
-$('#shclKeyframes').shCircleLoader({keyframes:"0%{{prefix}transform:scale(1)}80%{{prefix}transform:scale(.3);background:red}100%{{prefix}transform:scale(1)}"});
+$('#shclKeyframes').shCircleLoader({keyframes:"0%{background:black}40%{background:transparent}60%{background:transparent}100%{background:black}"});
 $('#shclNs').shCircleLoader({namespace:"myns",color:"transparent",dotsRadius:15});
 </script>
 
