@@ -10,7 +10,7 @@
 (function($) {
 
     $.fn.shCircleLoader = function(options) {
-        var defaultNamespace = "shCircleLoader";
+        var defaultNamespace = "shcl";
 
         if (options === "destroy") {
             $(this).find("div." + defaultNamespace).detach();
@@ -34,10 +34,11 @@
 
         $.extend(o, options);
 
-        var ns = o.namespace;
+        var ns = o.namespace,
+            eCss = o.externalCss;
         while ($('#' + ns + id).get(0)) {id++;}
 
-        var parseCSS = function(text) {
+        var parseCss = function(text) {
             var prefix, ret = "", p = o.uaPrefixes;
             for (var i = 0; i < p.length; i++) {
                 prefix = p[i].length ? ("-" + p[i] + "-") : "";
@@ -46,11 +47,11 @@
             return ret;
         },
 
-        prefixedCSS = function(property, value) {
+        prefixedCss = function(property, value) {
             var ret = {};
             if (!property.substr) {
                 $.each(property, function(p, v) {
-                    $.extend(ret, prefixedCSS(p, v));
+                    $.extend(ret, prefixedCss(p, v));
                 });
             } else {
                 var i, prefix, p = o.uaPrefixes;
@@ -66,29 +67,33 @@
             return str.replace(/(.*)px$/i, "$1");
         };
 
-        if (!o.externalCss)
-            $($('head').get(0) ? 'head' : 'body').append('<style id="' + ns + id + '" type="text/css">' + parseCSS('@{prefix}keyframes ' + ns + id + '_bounce{' + o.keyframes + '}') + '</style>');
+        if (!eCss)
+            $($('head').get(0) ? 'head' : 'body').append('<style id="' + ns + id + '" type="text/css">' + parseCss('@{prefix}keyframes ' + ns + id + '_bounce{' + o.keyframes + '}') + '</style>');
 
         $(this).each(function() {
             var r, dr, i, dot, rad, x, y, delay, offset, css, cssBase = {}, el = $(this);
+
+            el.html('<div class="' + ns + ((ns != defaultNamespace) ? (" " + defaultNamespace) : "") + '"></div>');
+
+            if (eCss)
+                el = el.find('div');
 
             x = el.innerWidth() - no_px(el.css('padding-left')) - no_px(el.css('padding-right'));
             y = el.innerHeight() - no_px(el.css('padding-top')) - no_px(el.css('padding-bottom'));
 
             r = (o.radius == "auto")
-                ? ((x < y) ? (x / 2) : (y / 2)) - 1
+                ? ((x < y) ? (x / 2) : (y / 2))
                 : o.radius;
 
-            if (o.dotsRadius == "auto") {
-                dr = Math.abs(Math.sin(Math.PI / (1 * o.dots))) * r;
-                dr = (dr * r) / (dr + r) - 1;
-            } else
-                dr = o.dotsRadius;
+            if (!eCss) {
+                r--;
+                if (o.dotsRadius == "auto") {
+                    dr = Math.abs(Math.sin(Math.PI / (1 * o.dots))) * r;
+                    dr = (dr * r) / (dr + r) - 1;
+                } else
+                    dr = o.dotsRadius;
 
-            el.html('<div class="' + ((ns != defaultNamespace) ? (defaultNamespace + " ") : "") + ns + '"></div>');
-            el = el.find('div')
-
-            if (!o.externalCss) {
+                el = el.find('div');
 
                 i = Math.ceil(r * 2);
                 css = {
@@ -112,7 +117,7 @@
                     background: (o.color == "auto") ? el.css('color') : o.color
                 };
 
-                $.extend(cssBase, prefixedCSS({
+                $.extend(cssBase, prefixedCss({
                     'border-radius': Math.ceil(dr) + "px",
                     'animation-name': ns + id + "_bounce",
                     'animation-duration': o.duration  + "s",
@@ -123,10 +128,12 @@
 
             for (i = 0; i < o.dots; i++) {
                 el.append("<div></div>");
+                if (eCss && (typeof dr === "undefined"))
+                    dr = (no_px(el.find('div').css('width')) / 2);
                 dot = el.find('div').last();
                 delay = (o.duration / o.dots) * i;
                 rad = (2 * Math.PI * i) / o.dots;
-                offset = (r - dr);
+                offset = r - dr;
                 x = offset * Math.sin(rad);
                 y = offset * Math.cos(rad);
 
@@ -138,7 +145,7 @@
                 };
 
                 if (delay)
-                    $.extend(css, prefixedCSS('animation-delay', delay + 's'));
+                    $.extend(css, prefixedCss('animation-delay', delay + 's'));
 
                 $.extend(css, cssBase);
                 dot.css(css);
