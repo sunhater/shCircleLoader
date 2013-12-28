@@ -10,46 +10,103 @@ div[id] {width:100px; height:100px; margin:10px auto;}
 span {font-family:monospace;font-size: 14px}
 pre {text-align:left;margin:0 auto;border:1px solid #888;padding:3px;width:400px;background:#eee}
 .myns > div {
-    box-shadow: 0 0 6px #000, inset 0 0 6px #000;
+    box-shadow: 0 0 6px black, inset 0 0 6px black;
 }
+
 </style>
 </head>
 <body>
 <hr />
 
-<h2>Default loader</h2> <span>.shCircleLoader()</span>
+<h2>Default loader</h2>
+<pre>$('#loader').shCircleLoader();</pre>
 <div id="shclDefault"></div>
 <hr />
 
-<h2>Counterclockwise direction</h2> <span>.shCircleLoader({clockwise: false})</span>
+<h2>Counterclockwise direction</h2>
+<pre>$('#loader').shCircleLoader({clockwise: false});</pre>
 <div id="shclCcw"></div>
 <hr />
 
-<h2>Custom color</h2> <span>.shCircleLoader({color: "red"})</span>
+<h2>Custom color</h2>
+<pre>$('#loader').shCircleLoader({color: "red"});</pre>
 <div id="shclColor"></div>
 <hr />
 
-<h2>Custom duration</h2> <span>.shCircleLoader({duration: 2})</span>
+<h2>Custom duration</h2>
+<pre>$('#loader').shCircleLoader({duration: 2});</pre>
 <div id="shclDuration"></div>
 <hr />
 
-<h2>Custom dots</h2> <span>.shCircleLoader({dots: 24, dotsRadius: 10})</span>
+<h2>Custom dots</h2>
+<pre>
+$('#loader').shCircleLoader({
+    dots: 24,
+    dotsRadius: 10
+});
+</pre>
 <div id="shclDots"></div>
 <hr />
 
-<h2>Custom dot animation</h2> <span>.shCircleLoader({keyframes: "0%{background:black} 40%{background:transparent} 60%{background:transparent} 100%{background:black}"})</span>
+<h2>Custom dot animation</h2>
+<pre>
+$('#loader').shCircleLoader({
+    keyframes:
+       "0%   {background:black}\
+        40%  {background:transparent}\
+        60%  {background:transparent}\
+        100% {background:black}"
+});
+</pre>
 <div id="shclKeyframes"></div>
 <hr />
 
-<h2>Custom namespace</h2> <span>.shCircleLoader({namespace: "myns", color: "transparent", dotsRadius: 15})</span>
+<h2>Custom namespace</h2>
+<pre>
+$('#loader').shCircleLoader({
+    namespace: "myns",
+    color: "transparent",
+    dotsRadius: 15
+});
+</pre>
 <h3>CSS:</h3>
 <pre>
 .myns > div {
-    box-shadow: 0 0 6px #000, inset 0 0 6px #000;
+    box-shadow: 0 0 6px black, inset 0 0 6px black;
 }
 </pre>
 <div id="shclNs"></div>
 <hr />
+
+<h2>Two Fireballs</h2>
+<pre style="width:500px">
+$('#loader').shCircleLoader({
+    color: "red",
+    dots: 24,
+    dotsRadius: 13,
+    keyframes:
+       "0%   {background: red;    {prefix}transform: scale(1)}\
+        20%  {background: orange; {prefix}transform: scale(.4)}\
+        40%  {background: red;    {prefix}transform: scale(0)}\
+        50%  {background: red;    {prefix}transform: scale(1)}\
+        70%  {background: orange; {prefix}transform: scale(.4)}\
+        90%  {background: red;    {prefix}transform: scale(0)}\
+        100% {background: red;    {prefix}transform: scale(1)}"
+});
+</pre>
+<div id="shclFireballs"></div>
+<hr />
+
+<h2>Progress status</h2>
+<pre style="">
+$('#loader').shCircleLoader();
+var i = 0;
+setInterval(function() {
+    $('#loader').shCircleLoader('progress', i + '%');
+    if (++i > 100) i = 0;
+}, 100);
+</pre>
+<div id="shclProgress"></div>
 
 <script type="text/javascript">
 $('#shclDefault').shCircleLoader();
@@ -59,6 +116,26 @@ $('#shclDuration').shCircleLoader({duration: 2});
 $('#shclDots').shCircleLoader({dots:24,dotsRadius:10});
 $('#shclKeyframes').shCircleLoader({keyframes:"0%{background:black}40%{background:transparent}60%{background:transparent}100%{background:black}"});
 $('#shclNs').shCircleLoader({namespace:"myns",color:"transparent",dotsRadius:15});
+$('#shclFireballs').shCircleLoader({
+    color: "red",
+    dots: 24,
+    dotsRadius: 13,
+    keyframes:
+       "0%   {background: red;    {prefix}transform: scale(1)}\
+        20%  {background: orange; {prefix}transform: scale(.4)}\
+        40%  {background: red;    {prefix}transform: scale(0)}\
+        50%  {background: red;    {prefix}transform: scale(1)}\
+        70%  {background: orange; {prefix}transform: scale(.4)}\
+        90%  {background: red;    {prefix}transform: scale(0)}\
+        100% {background: red;    {prefix}transform: scale(1)}"
+});
+
+$('#shclProgress').shCircleLoader();
+var i = 0;
+setInterval(function() {
+    $('#shclProgress').shCircleLoader('progress', i + '%');
+    if (++i > 100) i = 0;
+}, 100);
 </script>
 
 </body>

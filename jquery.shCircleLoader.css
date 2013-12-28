@@ -1,5 +1,5 @@
 /*!
- * SunHater Circle Loader v0.1 (2014-01-12)
+ * SunHater Circle Loader v0.2 (2013-12-28)
  * jQuery plugin
  * Copyright (c) 2014 Pavel Tzonkov <sunhater@sunhater.com>
  * Dual licensed under the MIT and GPL licenses.
@@ -19,13 +19,22 @@
 }
 
 
+/* Progress status */
+.shcl > span {
+    font-family: Verdana, Tahoma, Arial, sans-serif;
+    font-size: 14px;
+    color: black;
+}
+
+
 /* Loader dots */
 .shcl > div {
     position: absolute;
+    visibility: hidden;
     width: 10px;
     height: 10px;
-    background: #fff;
-    box-shadow: 0 0 10px #000;
+    background: transparent;
+    box-shadow: 0 0 10px black;
 
     -webkit-border-radius: 5px;
     -webkit-animation-name: shcl_bounce;

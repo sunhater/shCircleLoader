@@ -1,5 +1,5 @@
 /*!
- * SunHater Circle Loader v0.1 (2014-01-12)
+ * SunHater Circle Loader v0.2 (2013-12-28)
  * jQuery plugin
  * Copyright (c) 2014 Pavel Tzonkov <sunhater@sunhater.com>
  * Dual licensed under the MIT and GPL licenses.
@@ -9,39 +9,69 @@
 
 (function($) {
 
-    $.fn.shCircleLoader = function(options) {
-        var defaultNamespace = "shcl";
+    $.fn.shCircleLoader = function(first, second) {
 
-        if (options === "destroy") {
-            $(this).find("div." + defaultNamespace).detach();
+        var defaultNamespace = "shcl",
+            id = 1,
+            sel = $(this);
+
+        // Destroy the loader
+        if (first === "destroy") {
+            sel.find("." + defaultNamespace).detach();
+            return;
+
+        // Show progress status into the center
+        } else if ((first === "progress") && (typeof second !== "undefined")) {
+            sel.each(function() {
+                var el = $(this),
+                    outer = el.find('.' + defaultNamespace);
+                if (!outer.get(0))
+                    return;
+                if (!el.find('span').get(0))
+                    outer.append("<span></span>");
+                var span = outer.find('span').last();
+                span.html(second).css({
+                    position: "absolute",
+                    display: "block",
+                    left: Math.round((outer.width() - span.width()) / 2) + "px",
+                    top: Math.round((outer.height() - span.height()) / 2) + "px"
+                });
+            });
             return;
         }
 
-        var  id = 1,
-
+        // Default options
         o = {
             namespace: defaultNamespace,
-            radius: "auto",
+            radius: "auto", // "auto" - calculate from selector's width and height
             dotsRadius: "auto",
-            color: "auto",
+            color: "auto", // "auto" - get from selector's color CSS property; null - do not set
             dots: 12,
             duration: 1,
             clockwise: true,
-            externalCss: false,
+            externalCss: false, // true - don't apply CSS from the script
             keyframes: '0%{{prefix}transform:scale(1)}80%{{prefix}transform:scale(.3)}100%{{prefix}transform:scale(1)}',
             uaPrefixes: ['o', 'ms', 'webkit', 'moz', '']
         };
 
-        $.extend(o, options);
+        $.extend(o, first);
 
-        var ns = o.namespace,
-            eCss = o.externalCss;
-        while ($('#' + ns + id).get(0)) {id++;}
+        // Usable options (for better YUI compression)
+        var cl = o.color,
+            ns = o.namespace,
+            dots = o.dots,
+            eCss = o.externalCss,
+            ua = o.uaPrefixes,
 
-        var parseCss = function(text) {
-            var prefix, ret = "", p = o.uaPrefixes;
-            for (var i = 0; i < p.length; i++) {
-                prefix = p[i].length ? ("-" + p[i] + "-") : "";
+        // Helper functions
+        no_px = function(str) {
+            return str.replace(/(.*)px$/i, "$1");
+        },
+
+        parseCss = function(text) {
+            var i, prefix, ret = "";
+            for (i = 0; i < ua.length; i++) {
+                prefix = ua[i].length ? ("-" + ua[i] + "-") : "";
                 ret += text.replace(/\{prefix\}/g, prefix);
             }
             return ret;
@@ -54,24 +84,42 @@
                     $.extend(ret, prefixedCss(p, v));
                 });
             } else {
-                var i, prefix, p = o.uaPrefixes;
-                for (var i = 0; i < p.length; i++) {
-                    prefix = p[i].length ? ("-" + p[i] + "-") : "";
+                var i, prefix;
+                for (i = 0; i < ua.length; i++) {
+                    prefix = ua[i].length ? ("-" + ua[i] + "-") : "";
                     ret[prefix + property] = value;
                 }
             }
             return ret;
-        },
-
-        no_px = function(str) {
-            return str.replace(/(.*)px$/i, "$1");
         };
 
-        if (!eCss)
-            $($('head').get(0) ? 'head' : 'body').append('<style id="' + ns + id + '" type="text/css">' + parseCss('@{prefix}keyframes ' + ns + id + '_bounce{' + o.keyframes + '}') + '</style>');
+        // Get unexisting ID
+        while ($('#' + ns + id).get(0)) {id++;}
 
-        $(this).each(function() {
-            var r, dr, i, dot, rad, x, y, delay, offset, css, cssBase = {}, el = $(this);
+        // Create animation CSS
+        if (!eCss) {
+            var kf = o.keyframes.replace(/\s+$/, "").replace(/^\s+/, "");
+
+
+            // Test if the first keyframe (0% or "from") has visibility property. If not - add it.
+            if (!/(\;|\{)\s*visibility\s*\:/gi.test(kf))
+                kf = /^(0+\%|from)\s*\{/i.test(kf)
+                    ? kf.replace(/^((0+\%|from)\s*\{)(.*)$/i, "$1visibility:visible;$3")
+                    : (/\s+(0+\%|from)\s*\{/i.test(kf)
+                        ? kf.replace(/(\s+(0+\%|from)\s*\{)/i, "$1visibility:visible;")
+                        : ("0%{visibility:visible}" + kf));
+
+            $($('head').get(0) ? 'head' : 'body').append('<style id="' + ns + id + '" type="text/css">' + parseCss('@{prefix}keyframes ' + ns + id + '_bounce{' + kf + '}') + '</style>');
+        }
+
+        // Create loader
+        sel.each(function() {
+            var r, dr, i, dot, rad, x, y, delay, offset, css, cssBase = {}, el = $(this), l = el.find('.' + defaultNamespace);
+
+            // If loader exists, destroy it before creating new one
+            if (l.get(0))
+                l.shCircleLoader("destroy");
+
 
             el.html('<div class="' + ns + ((ns != defaultNamespace) ? (" " + defaultNamespace) : "") + '"></div>');
 
@@ -88,7 +136,7 @@
             if (!eCss) {
                 r--;
                 if (o.dotsRadius == "auto") {
-                    dr = Math.abs(Math.sin(Math.PI / (1 * o.dots))) * r;
+                    dr = Math.abs(Math.sin(Math.PI / (1 * dots))) * r;
                     dr = (dr * r) / (dr + r) - 1;
                 } else
                     dr = o.dotsRadius;
@@ -112,27 +160,30 @@
                 i = Math.ceil(dr * 2) + "px";
                 cssBase = {
                     position: "absolute",
+                    visibility: "hidden",
                     width: i,
-                    height: i,
-                    background: (o.color == "auto") ? el.css('color') : o.color
+                    height: i
                 };
+
+                if (cl !== null)
+                    cssBase.background = (cl == "auto") ? el.css('color') : cl;
 
                 $.extend(cssBase, prefixedCss({
                     'border-radius': Math.ceil(dr) + "px",
                     'animation-name': ns + id + "_bounce",
                     'animation-duration': o.duration  + "s",
                     'animation-iteration-count': "infinite",
-                    'animation-direction': "linear"
+                    'animation-direction': "normal"
                 }));
             }
 
-            for (i = 0; i < o.dots; i++) {
+            for (i = 0; i < dots; i++) {
                 el.append("<div></div>");
                 if (eCss && (typeof dr === "undefined"))
                     dr = (no_px(el.find('div').css('width')) / 2);
                 dot = el.find('div').last();
-                delay = (o.duration / o.dots) * i;
-                rad = (2 * Math.PI * i) / o.dots;
+                delay = (o.duration / dots) * i;
+                rad = (2 * Math.PI * i) / dots;
                 offset = r - dr;
                 x = offset * Math.sin(rad);
                 y = offset * Math.cos(rad);
