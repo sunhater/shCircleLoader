@@ -41,7 +41,7 @@
         }
 
         // Default options
-        o = {
+        var o = {
             namespace: defaultNamespace,
             radius: "auto", // "auto" - calculate from selector's width and height
             dotsRadius: "auto",
