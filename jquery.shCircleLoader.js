@@ -100,7 +100,6 @@
         if (!eCss) {
             var kf = o.keyframes.replace(/\s+$/, "").replace(/^\s+/, "");
 
-
             // Test if the first keyframe (0% or "from") has visibility property. If not - add it.
             if (!/(\;|\{)\s*visibility\s*\:/gi.test(kf))
                 kf = /^(0+\%|from)\s*\{/i.test(kf)
@@ -119,7 +118,6 @@
             // If loader exists, destroy it before creating new one
             if (l.get(0))
                 l.shCircleLoader("destroy");
-
 
             el.html('<div class="' + ns + ((ns != defaultNamespace) ? (" " + defaultNamespace) : "") + '"></div>');
 
