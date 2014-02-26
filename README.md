@@ -151,4 +151,4 @@ So, you can define your custom CSS syles for the widget:
 }
 ```
 
-If you are using custom namespace option you should use the same as the class name (replace shcs).
+If you are using custom namespace option you should use the same as the class name (replace **shcs**).
