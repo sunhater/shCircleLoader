@@ -6,7 +6,7 @@ Pavel Tzonkov <sunhater@sunhater.com>
 http://jquery.sunhater.com/shCheckset
 
 ##Description
-shCheckset is replacement of the standard multiple *&lt;select>* HTML tag.
+shCheckset is replacement of the standard multiple **&lt;select&gt;* HTML tag.
 
 ##Licenses
 * GNU General Public License, version 3
@@ -35,7 +35,7 @@ Just include jQuery and shCheckset source files into the head tag.
 ```
 
 ##Creation
-To create a checkset widget, first you have to put a *<select multiple>* tag at the right spot on the page.
+To create a checkset widget, first you have to put a **&lt;select multiple&gt;** tag at the right spot on the page.
 
 ```html
 <select id="checkset" multiple="multiple" name="test[]" style="height:200px">
@@ -54,13 +54,13 @@ To create a checkset widget, first you have to put a *<select multiple>* tag at 
 </select>
 ```
 
-Next you have to call *shCheckset()* plugin function applied to the created select box. You can use options to customize the widget (see next section).
+Next you have to call **shCheckset()** plugin function applied to the created select box. You can use options to customize the widget (see next section).
 
 ```javascript
 $('#checkset').shCheckset();
 ```
 
-Also you can apply the checkset to all multiple *<select>* tags on the page.
+Also you can apply the checkset to all multiple **&lt;select&gt;** tags on the page.
 
 ```javascript
 $('select[multiple]').shCheckset();
@@ -76,7 +76,7 @@ This option contains the text labels used in the plugin. Currently there is sear
 | namespace | Type: String | Default: "shcs" |
 |-----------|--------------|-----------------|
 
-CSS namespace. Actualy it is CSS class, which can be used to customize the widget. This class will be applied to the outer widget *<div>* container.
+CSS namespace. Actualy it is CSS class, which can be used to customize the widget. This class will be applied to the outer widget **&lt;div&gt;** container.
 
 | search | Type: Boolean | Default: false |
 |--------|---------------|----------------|
@@ -99,7 +99,7 @@ Let see an example and how the select tag transforms.
 </select>
 ```
 
-When the shCheckset() is applied, the select box will be detached from the page. On the same spot the checkset widget will be created.
+When the **shCheckset()** is applied, the select box will be detached from the page. On the same spot the checkset widget will be created.
 
 ```html
 <div class="shcs">
