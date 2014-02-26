@@ -50,7 +50,7 @@ To create a checkset widget, first you have to put a *<select multiple>* tag at 
     <option value="11">Example Option Eleven</option>
     <option value="12">Example Option Twelve</option>
 </select>
-```html
+```
 
 Next you have to call shCheckset() plugin function applied to the created select box. You can use options to customize the widget (see next section).
 
