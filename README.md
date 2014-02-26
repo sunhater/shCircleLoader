@@ -1,10 +1,12 @@
 #shCheckset
 Multiple select box alternative.
+
 Pavel Tzonkov <sunhater@sunhater.com>
+
 http://jquery.sunhater.com/shCheckset
 
 ##Description
-shCheckset is replacement of the standard multiple <select> HTML tag.
+shCheckset is replacement of the standard multiple *<select>* HTML tag.
 
 ##Licenses
 * GNU General Public License, version 3
@@ -52,13 +54,13 @@ To create a checkset widget, first you have to put a *<select multiple>* tag at 
 </select>
 ```
 
-Next you have to call shCheckset() plugin function applied to the created select box. You can use options to customize the widget (see next section).
+Next you have to call *shCheckset()* plugin function applied to the created select box. You can use options to customize the widget (see next section).
 
 ```javascript
 $('#checkset').shCheckset();
 ```
 
-Also you can apply the checkset to all multiple <select> tags on the page.
+Also you can apply the checkset to all multiple *<select>* tags on the page.
 
 ```javascript
 $('select[multiple]').shCheckset();
@@ -74,7 +76,7 @@ This option contains the text labels used in the plugin. Currently there is sear
 | namespace | Type: String | Default: "shcs" |
 |-----------|--------------|-----------------|
 
-CSS namespace. Actualy it is CSS class, which can be used to customize the widget. This class will be applied to the outer widget <div> container.
+CSS namespace. Actualy it is CSS class, which can be used to customize the widget. This class will be applied to the outer widget *<div>* container.
 
 | search | Type: Boolean | Default: false |
 |--------|---------------|----------------|
